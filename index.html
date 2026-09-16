@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#092d3e">
+  <title>기후 탐험대: 지구를 구하라!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sky-glow"></div>
+  <main class="game-shell">
+    <header class="game-header">
+      <button class="brand" data-action="home" aria-label="처음 화면으로">🌍 <span>기후 탐험대</span></button>
+      <div id="hud" class="hud hidden" aria-live="polite">
+        <span>LV.<b id="hud-level">1</b></span><span>❤️ <b id="hud-hp">5</b></span><span>✨ <b id="hud-exp">0</b></span><span>🪙 <b id="hud-gold">0</b></span>
+      </div>
+    </header>
+
+    <section id="screen-start" class="screen active">
+      <div class="hero-card">
+        <p class="eyebrow">CLIMATE QUEST</p>
+        <h1>기후 탐험대<br><em>지구를 구하라!</em></h1>
+        <p>망가진 기후 코어를 되찾고, 자연환경과 사람들의 생활을 연결하는 탐험을 시작하세요.</p>
+        <button class="primary xl" data-action="open-profile">탐험 시작하기 <span>→</span></button>
+      </div>
+      <div class="planet" aria-hidden="true"><span>🌍</span><i class="orbit one"></i><i class="orbit two"></i></div>
+    </section>
+
+    <section id="screen-profile" class="screen panel-screen">
+      <div class="panel narrow">
+        <button class="back" data-action="go-start">← 돌아가기</button>
+        <p class="step">STEP 1</p><h2>탐험대 등록</h2>
+        <p class="muted">개인정보 보호를 위해 실제 이름보다 별명을 권장해요.</p>
+        <form id="profile-form" class="stack">
+          <label>학급<input id="class-name" name="className" value="6-1" maxlength="12" required placeholder="예: 6-1"></label>
+          <label>번호<input id="student-number" name="studentNumber" type="number" value="12" min="1" max="99" required></label>
+          <label>별명<input id="nickname" name="nickname" value="기후탐험가12" maxlength="14" required></label>
+          <button class="primary" type="submit">캐릭터 선택하기 →</button>
+        </form>
+        <p class="privacy">🔒 이메일, 전화번호, Google 계정은 수집하지 않습니다.</p>
+      </div>
+    </section>
+
+    <section id="screen-character" class="screen panel-screen">
+      <div class="panel wide">
+        <button class="back" data-action="back-profile">← 탐험대 등록</button>
+        <p class="step">STEP 2</p><h2>탐험 파트너 선택</h2>
+        <div id="character-list" class="character-grid"></div>
+        <button id="character-confirm" class="primary" disabled>탐험 지도 열기 →</button>
+      </div>
+    </section>
+
+    <section id="screen-map" class="screen panel-screen">
+      <div class="panel wide map-panel">
+        <div class="section-title"><div><p class="step">WORLD MAP</p><h2>기후 코어 탐험</h2></div><p id="map-progress" class="progress-text">0 / 4 완료</p></div>
+        <div class="progress"><span id="map-progress-bar"></span></div>
+        <div id="climate-map" class="climate-map"></div>
+        <button id="boss-button" class="boss-button" disabled>🔒 4개 기후 코어를 모으면 최종 미션이 열립니다</button>
+      </div>
+    </section>
+
+    <section id="screen-quiz" class="screen panel-screen">
+      <div class="panel quiz-panel">
+        <div class="quiz-top"><span id="quiz-climate" class="climate-tag"></span><span id="quiz-count"></span></div>
+        <div class="progress"><span id="quiz-progress"></span></div>
+        <p id="quiz-story" class="story"></p>
+        <h2 id="quiz-question"></h2>
+        <div id="quiz-choices" class="choice-list"></div>
+        <div id="quiz-feedback" class="feedback hidden" aria-live="polite"></div>
+        <button id="quiz-next" class="primary hidden">다음 →</button>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen panel-screen">
+      <div class="panel result-panel">
+        <p class="mission">MISSION COMPLETE</p><div class="trophy">🏆</div>
+        <h2>기후 코어가 다시 빛나기 시작했어요!</h2>
+        <p id="result-subtitle" class="muted"></p>
+        <div id="result-summary" class="result-grid"></div>
+        <div class="result-columns"><div><h3>🎖️ 획득 업적</h3><div id="achievement-list" class="badges"></div></div><div><h3>🧭 학습 나침반</h3><div id="learning-summary"></div></div></div>
+        <div id="submit-status" class="submit-status" aria-live="polite"></div>
+        <div class="action-row"><button id="retry-submit" class="secondary hidden">결과 다시 전송</button><button id="ranking-button" class="primary hidden">🏆 우리 반 랭킹</button><button class="secondary" data-action="restart">다시 플레이</button></div>
+      </div>
+    </section>
+
+    <section id="screen-ranking" class="screen panel-screen">
+      <div class="panel ranking-panel">
+        <button class="back" data-action="back-result">← 탐험 결과</button>
+        <p class="step">CLASS RANKING</p><h2 id="ranking-title">🏆 우리 반 탐험 랭킹</h2>
+        <div id="ranking-list" class="ranking-list"></div>
+        <div class="fair-note"><b>🏆 랭킹은 탐험 결과를 재미있게 확인하기 위한 기능입니다.</b><br>친구와 비교하기보다 내가 어떤 기후를 잘 이해했는지 확인해 보세요!</div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

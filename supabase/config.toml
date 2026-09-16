@@ -1,0 +1,4 @@
+project_id = "climate-expedition"
+
+[functions.climate-api]
+verify_jwt = false

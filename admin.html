@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3f6f9"><title>기후 탐험대 교사용 관리</title><link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <section id="login-view" class="login-view">
+    <form id="login-form" class="login-card">
+      <div class="admin-logo">🌍</div><p class="overline">TEACHER CONSOLE</p><h1>교사용 관리 페이지</h1><p>Supabase Secrets에 설정한 교사용 PIN을 입력하세요.</p>
+      <label>교사용 PIN<input id="pin" type="password" inputmode="numeric" autocomplete="current-password" required placeholder="PIN 입력"></label>
+      <button class="btn primary" type="submit">로그인</button><p id="login-error" class="error" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <div id="app-view" class="app hidden">
+    <aside class="sidebar">
+      <div class="side-brand">🌍 <span>기후 탐험대<small>교사용 관리</small></span></div>
+      <nav id="nav">
+        <button class="active" data-tab="dashboard">📊 <span>대시보드</span></button><button data-tab="ranking">🏆 <span>랭킹</span></button><button data-tab="students">👨‍🎓 <span>학생별 결과</span></button><button data-tab="climates">🌍 <span>기후별 분석</span></button><button data-tab="questions">❓ <span>문제별 분석</span></button><button data-tab="settings">⚙️ <span>설정</span></button>
+      </nav>
+      <button id="logout" class="logout">로그아웃</button>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div><p class="overline">CLASS INSIGHT</p><h1 id="page-title">수업 현황</h1></div>
+        <div class="top-actions"><select id="class-filter" aria-label="학급 선택"><option value="">전체 학급</option></select><button id="refresh" class="btn ghost">🔄 새로고침</button></div>
+      </header>
+      <div id="notice" class="notice hidden"></div>
+
+      <section id="tab-dashboard" class="tab active">
+        <div id="summary-cards" class="summary-grid"></div>
+        <div class="grid two"><article class="card"><div class="card-head"><h2>학생 결과</h2><button class="link-btn" data-goto="students">전체 보기 →</button></div><div id="recent-table"></div></article><article class="card"><h2>기후별 이해도</h2><div id="dashboard-climates"></div></article></div>
+        <article id="hardest-card" class="card alert-card"></article>
+      </section>
+
+      <section id="tab-ranking" class="tab">
+        <article class="card"><div class="card-head wrap"><div><h2>전체 탐험 랭킹</h2><p>시간은 순위 결정에 사용하지 않습니다.</p></div><label class="inline-label">정렬<select id="rank-sort"><option value="score">탐험 점수</option><option value="accuracy">정답률</option><option value="firstTry">첫 시도 정답</option><option value="playTime">플레이 시간</option><option value="number">학생 번호</option><option value="recent">최근 제출</option></select></label></div><div id="ranking-table"></div></article>
+      </section>
+
+      <section id="tab-students" class="tab">
+        <article class="card"><div class="card-head wrap"><div><h2>학생별 학습 결과</h2><p>행을 선택하면 상세 학습 분석을 확인할 수 있습니다.</p></div><input id="student-search" class="search" type="search" placeholder="🔍 번호 또는 별명 검색"></div><div id="student-table"></div></article>
+      </section>
+
+      <section id="tab-climates" class="tab">
+        <div class="grid two"><article class="card"><h2>우리 반 기후별 이해도</h2><div id="climate-bars"></div></article><article id="climate-guidance" class="card"></article></div>
+      </section>
+
+      <section id="tab-questions" class="tab">
+        <article class="card"><h2>문제별 오개념 분석</h2><p>첫 선택을 기준으로 정답률과 자주 선택한 오답을 계산합니다.</p><div id="question-grid" class="question-grid"></div></article>
+      </section>
+
+      <section id="tab-settings" class="tab">
+        <div class="grid two"><form id="settings-form" class="card settings-card"><h2>수업 설정</h2><label class="toggle-row">학생 랭킹 <input name="rankingEnabled" type="checkbox"><span class="toggle"></span></label><label>학생 랭킹 범위<select name="rankingLimit"><option value="5">TOP 5</option><option value="10">TOP 10</option><option value="999">전체</option></select></label><label>재도전 반영 방식<select name="rankingMode"><option value="best">최고 점수</option><option value="latest">최근 점수</option><option value="first">첫 점수</option></select></label><label>표시 이름<select name="nameMode"><option value="nickname">별명 사용</option><option value="name">이름 사용</option></select></label><div class="number-grid"><label>문제 수<input name="questionCount" type="number" min="1" max="50"></label><label>탐험 지역 수<input name="regionCount" type="number" min="1" max="6"></label><label>보스 문제 수<input name="bossCount" type="number" min="1" max="3"></label></div><button class="btn primary" type="submit">설정 저장</button></form><article class="card tools-card"><h2>데이터 관리</h2><p>현재 선택한 학급의 결과를 내려받거나 초기화합니다.</p><button id="download-csv" class="btn ghost">📥 결과 CSV 다운로드</button><hr><h3>수업 결과 초기화</h3><p class="danger-text">삭제한 결과는 되돌릴 수 없습니다.</p><button id="open-reset" class="btn danger">이번 수업 결과 초기화</button></article></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="student-dialog"><button class="dialog-close" aria-label="닫기">×</button><div id="student-detail"></div></dialog>
+  <dialog id="reset-dialog"><form id="reset-form"><h2>⚠️ 주의</h2><p>현재 선택 범위의 학생 결과를 모두 삭제합니다.<br>이 작업은 되돌릴 수 없습니다.</p><label>삭제하려면 <b>RESET</b>을 입력하세요.<input id="reset-confirm" autocomplete="off" required></label><div class="dialog-actions"><button type="button" class="btn ghost dialog-close-button">취소</button><button class="btn danger" type="submit">영구 삭제</button></div></form></dialog>
+  <div id="admin-toast" class="toast"></div>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
