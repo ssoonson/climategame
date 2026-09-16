@@ -4,6 +4,6 @@
  * secret/service_role key는 절대로 이 파일이나 GitHub에 넣지 마세요.
  */
 window.CLIMATE_CONFIG = Object.freeze({
-  SUPABASE_URL: "",
-  SUPABASE_PUBLISHABLE_KEY: ""
+  SUPABASE_URL: "https://qcqpekwzdyxbqdfttfnz.supabase.co",
+  SUPABASE_PUBLISHABLE_KEY: "sb_publishable_PAo9PtXliPQm14hdu0SFAg_eZ91MJCH"
 });
